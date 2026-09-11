@@ -43,7 +43,7 @@ The first release. A working todo application, and the delivery process that pro
   administrators too.
 - **GitHub templates** — a pull request template carrying the Definition of Done inline, three
   issue forms, CODEOWNERS and Dependabot.
-- **57 tests** across both applications.
+- **55 tests** across both applications — 42 for the API, 13 for the web app.
 
 ### Known limitations
 
