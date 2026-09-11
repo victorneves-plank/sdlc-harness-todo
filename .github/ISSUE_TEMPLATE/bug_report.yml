@@ -1,0 +1,61 @@
+name: Bug report
+description: Something behaves differently from how it should
+title: "fix: "
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A good bug report lets someone else reproduce the problem without talking to you.
+        The reproduction steps are the part that matters most.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: The actual behaviour, precisely. Include exact error messages.
+      placeholder: Creating a todo with a title of only spaces returns 201 and stores an empty todo.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: And why — what made you expect that? A doc, the API contract, common sense?
+      placeholder: A 400 with INVALID_TITLE, since the domain rule says titles must be non-empty after trimming.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Numbered, from a clean checkout. The most valuable part of this report.
+      value: |
+        1. `npm install && npm run dev`
+        2. `curl -X POST localhost:3000/api/todos -H 'content-type: application/json' -d '{"title":"   "}'`
+        3. Observe: …
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Output of `git rev-parse --short HEAD`, or the release tag.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, OS, browser if relevant.
+      placeholder: "Node 20.11, macOS 15.3, Chrome 140"
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Logs, screenshots, a guess at the cause, what you already ruled out.
