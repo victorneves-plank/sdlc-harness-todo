@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+    "outDir": "dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "noEmit": true
+  },
+  // Includes tests and config so the editor, ESLint's type-aware rules and
+  // `npm run typecheck` all see the same files. Emitting is done by
+  // tsconfig.build.json, which narrows this to shippable source.
+  "include": ["src/**/*.ts", "*.config.ts"],
+  "exclude": ["dist"]
+}
