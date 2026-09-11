@@ -27,6 +27,15 @@ describe('Todo', () => {
       expect(() => Todo.create({ title: '   \t\n ' })).toThrow(InvalidTodoTitleError)
     })
 
+    // Pins the documented limit. The tests below derive their input from
+    // TITLE_MAX_LENGTH, which makes them good at checking the boundary LOGIC and
+    // useless at checking where the boundary IS -- change the constant and they
+    // simply move with it. This one fails, which is what forces a deliberate
+    // decision when the API contract changes.
+    it('caps titles at the 200 characters the API contract documents', () => {
+      expect(TITLE_MAX_LENGTH).toBe(200)
+    })
+
     it(`accepts a title of exactly ${TITLE_MAX_LENGTH} characters`, () => {
       const title = 'a'.repeat(TITLE_MAX_LENGTH)
 
