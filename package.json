@@ -1,6 +1,6 @@
 {
   "name": "sdlc-harness-todo",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "A practice harness for the SDLC, exercised on a small todo application.",
   "license": "MIT",
