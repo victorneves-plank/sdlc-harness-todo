@@ -13,7 +13,9 @@ If you are new here, this sequence gets you productive fastest:
 3. **[Commit Convention](sdlc/02-commit-convention.md)** — the grammar your commits must follow.
 4. **[Definition of Done](sdlc/05-definition-of-done.md)** — when work is allowed to be called
    finished.
-5. Everything else, as you need it.
+5. **[Verifying the Harness](sdlc/12-verifying-the-harness.md)** — ten minutes of deliberately
+   breaking things, which is the fastest way to understand what the gates actually do.
+6. Everything else, as you need it.
 
 ## Process
 
@@ -28,6 +30,7 @@ If you are new here, this sequence gets you productive fastest:
 | [07 — Release & Versioning](sdlc/07-release-and-versioning.md) | SemVer, release PRs, tags, CHANGELOG |
 | [10 — Workflow Walkthrough](sdlc/10-workflow-walkthrough.md) | The end-to-end runbook |
 | [11 — Delivery Metrics](sdlc/11-metrics-and-dora.md) | DORA's four keys and how this process targets them |
+| [12 — Verifying the Harness](sdlc/12-verifying-the-harness.md) | How to break each gate on purpose and confirm it still fires |
 
 ## Engineering
 

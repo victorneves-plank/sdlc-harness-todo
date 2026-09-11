@@ -48,6 +48,7 @@ Everything that governs how change flows into this repository lives in [`docs/`]
 | [Architecture Guide](docs/sdlc/09-architecture.md) | Clean Architecture layering and the dependency rule |
 | [Workflow Walkthrough](docs/sdlc/10-workflow-walkthrough.md) | The end-to-end runbook: idea → issue → branch → PR → release |
 | [Delivery Metrics](docs/sdlc/11-metrics-and-dora.md) | The four DORA metrics and how to read them here |
+| [Verifying the Harness](docs/sdlc/12-verifying-the-harness.md) | How to break each gate on purpose and confirm it still fires |
 | [ADRs](docs/adr/) | Architecture Decision Records — *why* things are the way they are |
 
 Start with the [Workflow Walkthrough](docs/sdlc/10-workflow-walkthrough.md) if you want
