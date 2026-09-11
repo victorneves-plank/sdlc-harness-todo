@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "noEmit": true
+  },
+  // Includes tests and config so the editor, ESLint's type-aware rules and
+  // `npm run typecheck` all see the same files.
+  "include": ["src/**/*.ts", "src/**/*.tsx", "*.config.ts"],
+  "exclude": ["dist"]
+}
