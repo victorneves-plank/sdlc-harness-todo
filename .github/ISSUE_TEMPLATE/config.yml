@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question about the process
+    url: https://github.com/victorneves-plank/sdlc-harness-todo/discussions
+    about: Ask about the SDLC harness itself — branching, reviews, releases.
+  - name: Read the docs first
+    url: https://github.com/victorneves-plank/sdlc-harness-todo/tree/develop/docs
+    about: The branching model, commit convention, review standard and Definition of Done.

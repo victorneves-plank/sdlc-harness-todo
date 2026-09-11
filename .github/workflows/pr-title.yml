@@ -1,0 +1,68 @@
+name: PR title
+
+# Squash merges make the PR title the permanent commit message on develop.
+# That is why this check blocks the merge while the per-commit check in ci.yml
+# does not. See docs/adr/0005-squash-merge-and-conventional-commits.md.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+jobs:
+  conventional-title:
+    name: Conventional Commits
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Drafts are exempt. The point of a draft is to get feedback on direction
+    # before the work is presentable; demanding a final title first defeats that.
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Validate title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          TYPES='feat|fix|perf|refactor|docs|test|build|ci|style|chore|revert'
+          SCOPES='api|web|domain|deps|deps-dev|ci|docs|repo|release'
+          PATTERN="^(${TYPES})(\\((${SCOPES})\\))?!?: .+"
+
+          echo "Title: ${TITLE}"
+          echo
+
+          fail() {
+            echo "::error::$1"
+            echo
+            echo "Expected:  <type>(<scope>): <imperative, lowercase, no full stop>"
+            echo "Types:     ${TYPES//|/, }"
+            echo "Scopes:    ${SCOPES//|/, }  (optional)"
+            echo
+            echo "Examples:"
+            echo "  feat(web): filter todos by completion status"
+            echo "  fix(api): return 404 instead of 500 for an unknown todo id"
+            echo "  refactor(domain): extract title validation into a value object"
+            echo "  feat(api)!: return todos newest-first instead of oldest-first"
+            echo
+            echo "See docs/sdlc/02-commit-convention.md"
+            exit 1
+          }
+
+          [[ "${TITLE}" =~ ${PATTERN} ]] \
+            || fail "Title does not match the Conventional Commits format."
+
+          SUBJECT="${TITLE#*: }"
+
+          [[ "${#TITLE}" -le 72 ]] \
+            || fail "Title is ${#TITLE} characters; the limit is 72."
+
+          [[ "${SUBJECT}" != *. ]] \
+            || fail "Subject must not end with a full stop."
+
+          [[ ! "${SUBJECT}" =~ ^[A-Z][a-z] ]] \
+            || fail "Subject must start lowercase ('add x', not 'Add x')."
+
+          echo "✓ Title is valid."

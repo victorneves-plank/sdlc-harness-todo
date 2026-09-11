@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose a new capability
+title: 'feat: '
+labels: ['type: feature']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the **problem** before the solution. An issue written as "add a dropdown" has
+        already discarded the alternatives; one written as "users can't tell which todos are
+        outstanding" has not.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: From the user's perspective. What can't they do today?
+      placeholder: With more than ~20 todos, there's no way to see only the ones still outstanding.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: What is the cost of not doing this? Be honest — if the answer is thin, that's useful to know now.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How we'll know it's done. Observable behaviour, not implementation.
+      value: |
+        - [ ] …
+        - [ ] …
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: What this explicitly does **not** cover. Prevents scope creep during review.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including doing nothing. If the feature is significant, this may become an ADR.
+
+  - type: checkboxes
+    id: sizing
+    attributes:
+      label: Sizing
+      options:
+        - label: This can be delivered in a branch that lives under two days (if not, it needs splitting first)
