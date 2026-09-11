@@ -1,7 +1,7 @@
 name: Bug report
 description: Something behaves differently from how it should
-title: "fix: "
-labels: ["type: bug"]
+title: 'fix: '
+labels: ['type: bug']
 body:
   - type: markdown
     attributes:
@@ -52,7 +52,7 @@ body:
     attributes:
       label: Environment
       description: Node version, OS, browser if relevant.
-      placeholder: "Node 20.11, macOS 15.3, Chrome 140"
+      placeholder: 'Node 20.11, macOS 15.3, Chrome 140'
 
   - type: textarea
     id: notes

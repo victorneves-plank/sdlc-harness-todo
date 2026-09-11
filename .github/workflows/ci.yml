@@ -1,0 +1,108 @@
+name: CI
+
+# Every pull request into develop or main, and every push to those branches.
+# This workflow is the gate referenced by branch protection: if it is not green,
+# nothing merges.
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+# A new push to a PR cancels the previous run. Reviewing a stale green check is
+# worse than reviewing no check at all.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Each step runs separately rather than via `npm run verify`, so a failure
+      # names itself in the GitHub UI without anyone reading a log.
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  commit-messages:
+    name: Commit messages
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # commitlint needs the full history of the branch to validate each commit
+          # in the range, not just the tip.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Validate every commit on this branch
+        # Advisory, not blocking: these commits are squashed at merge, so the
+        # message that becomes permanent is the PR title — which pr-title.yml
+        # validates and which DOES block. Failing here would punish an author for
+        # a working note nobody will ever read.
+        continue-on-error: true
+        run: |
+          npx commitlint \
+            --from "${{ github.event.pull_request.base.sha }}" \
+            --to "${{ github.event.pull_request.head.sha }}" \
+            --verbose
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Audit
+        # Reports without blocking. A blocking audit on a practice repo means a red
+        # pipeline caused by a transitive dev dependency nobody can act on, and a
+        # pipeline that is red for reasons you must ignore is a pipeline you stop
+        # reading. See SECURITY.md.
+        continue-on-error: true
+        run: npm audit --audit-level=high
