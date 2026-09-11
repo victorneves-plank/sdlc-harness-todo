@@ -205,11 +205,17 @@ Errors are uniform, which lets the frontend handle them in one place:
 { "error": { "code": "INVALID_TITLE", "message": "Title must not be empty" } }
 ```
 
-| Code | Status |
-| --- | --- |
-| `INVALID_TITLE` | 400 |
-| `TODO_NOT_FOUND` | 404 |
-| `INTERNAL_ERROR` | 500 |
+| Code | Status | Raised when |
+| --- | --- | --- |
+| `INVALID_REQUEST` | 400 | The request body is the wrong shape — missing `title`, wrong type, or a PATCH with no fields |
+| `INVALID_TITLE` | 400 | The body was well-formed but the title breaks a domain rule |
+| `TODO_NOT_FOUND` | 404 | No todo exists with that id |
+| `ROUTE_NOT_FOUND` | 404 | No such route |
+| `INTERNAL_ERROR` | 500 | An unhandled error — always a bug |
+
+The split between `INVALID_REQUEST` and `INVALID_TITLE` is the layer boundary made visible:
+zod rejects the first at the edge, the `Todo` entity rejects the second. A client can tell
+"you sent me nonsense" from "your todo is not allowed".
 
 ## On session memory
 
