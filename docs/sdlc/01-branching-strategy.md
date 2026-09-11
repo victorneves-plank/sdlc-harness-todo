@@ -40,8 +40,10 @@ its head is the latest code that has reached the "released" stage.
 
 - `main` only ever receives commits from `develop`, via a **release pull request**.
 - Every commit on `main` is tagged `vX.Y.Z`.
-- `main` is never merged back into `develop` under normal operation (a release PR is a
-  fast-forward-equivalent of develop's state, so there is nothing to bring back).
+- **`main` is never merged into `develop`.** Because release PRs are squash-merged, no commit on
+  `main` is an ancestor of `develop` and such a merge reports every file as an add/add conflict.
+  The release commit is brought back by [cherry-pick](07-release-and-versioning.md#6-bring-the-release-commit-back-to-develop)
+  instead.
 
 ### Short-lived working branches
 

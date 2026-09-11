@@ -110,17 +110,36 @@ convention and tooling assumes it.
 
 ### 6. Bring the release commit back to `develop`
 
-Because `main` now has the version-bump and CHANGELOG commit that `develop` lacks:
+`main` now has the version-bump and CHANGELOG commit that `develop` lacks. Bring it back by
+**cherry-picking the original release commit** — the one from the `release/*` branch, not the
+squash commit on `main`:
 
 ```bash
 git checkout develop && git pull
-git merge --ff-only main   # succeeds if nothing landed on develop meanwhile
-git push
+git checkout -b chore/sync-release-0.2.0
+git cherry-pick <sha of the "chore(release): 0.2.0" commit from the release branch>
+gh pr create --base develop --title "chore(release): sync 0.2.0 back to develop"
 ```
 
-If it does not fast-forward, open a normal PR from `main` into `develop`. **Do not skip this
-step** — divergence between `main` and `develop` is exactly the failure this model is designed
-to avoid, and it starts small and silently.
+**Do not skip this step** — divergence between `main` and `develop` is exactly the failure this
+model is designed to avoid, and it starts small and silently.
+
+> #### Why not `git merge --ff-only main`?
+>
+> Because it cannot work here, and it fails in a way that looks like something else.
+>
+> `main` only ever receives **squash** commits (ADR-0005), so no commit on `main` is an ancestor
+> of `develop`. The merge base of the two branches is permanently the repository's first commit.
+> Merging `main` into `develop` therefore reports **every file added since then as an add/add
+> conflict** — six conflicts, on the 0.1.0 release, for a change containing no new content.
+>
+> It gets worse. A conflicting PR cannot have its merge commit computed, so **GitHub runs no
+> PR-triggered checks on it at all**. The branch-protection checks do not fail; they silently
+> never run, and the PR shows whatever status the last push to the base branch produced. A
+> required check that quietly does not run is worse than one that fails.
+>
+> This was found on the first release of this repository, not in theory. See issue #19 for the
+> decision on whether to automate this step or drop `develop` entirely.
 
 ## Hotfix releases
 
