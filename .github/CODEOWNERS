@@ -1,0 +1,14 @@
+# Every PR requires review from the owner listed for the paths it touches.
+# Later matches take precedence over earlier ones.
+
+*                       @victorneves-plank
+
+# The harness itself — changes here change how everyone works, so they warrant
+# more thought than a code change of the same size.
+/docs/                  @victorneves-plank
+/.github/               @victorneves-plank
+/CONTRIBUTING.md        @victorneves-plank
+
+# Architectural decisions are immutable once accepted; a change here is either a
+# typo fix or a new ADR that should have been a new file.
+/docs/adr/              @victorneves-plank

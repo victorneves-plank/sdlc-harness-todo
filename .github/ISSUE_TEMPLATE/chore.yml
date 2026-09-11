@@ -1,0 +1,32 @@
+name: Chore / tooling
+description: Dependencies, CI, configuration, documentation, refactoring
+title: "chore: "
+labels: ["type: chore"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Dependency update
+        - CI / pipeline
+        - Tooling or configuration
+        - Documentation
+        - Refactoring (no behaviour change)
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs doing
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why now
+      description: Chores compete with features. What makes this worth doing at this moment?
+    validations:
+      required: true
